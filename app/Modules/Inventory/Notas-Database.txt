@@ -1,0 +1,332 @@
+1️⃣ Modelo Entidad–Relación (MER)
+
+Voy a describir el MER en texto estructurado, como se suele hacer antes de dibujarlo.
+_____________________________________________________________________________________
+
+
+🔹 Entidad central: PERSONA
+PERSONA
+* id_persona (PK)
+* tipo_persona (Cliente / Proveedor / Empleado / Repartidor)
+* nombre_razon_social
+* ruc
+* direccion
+* ciudad
+* descripcion_ubicacion
+👉 Una persona puede cumplir más de un rol
+👉 El rol se define en tablas especializadas
+_____________________________________________________________________________________
+
+
+🔹 Especialización de Persona (Relaciones 1–1)
+CLIENTE
+* id_persona (PK, FK → Persona)
+* nombre_contacto
+
+PROVEEDOR
+* id_persona (PK, FK → Persona)
+
+EMPLEADO
+* id_persona (PK, FK → Persona)
+* usuario
+* password
+* rol_sistema
+
+REPARTIDOR
+* id_persona (PK, FK → Persona)
+_____________________________________________________________________________________
+
+
+🔹 Teléfonos (1–N)
+TELEFONO
+* id_telefono (PK)
+* id_persona (FK)
+* numero
+_____________________________________________________________________________________
+
+
+🔹 Productos e Inventario
+FAMILIA_PRODUCTO
+* id (PK)
+* nombre
+* created_at
+* updated_at
+
+UNIDAD_MEDIDA
+* id (PK)
+* nombre
+* created_at
+* updated_at
+
+PRODUCTO
+* id (PK)
+* nombre
+* marca
+* descripcion
+* color
+* pais_origen
+* porcentaje_iva
+* familia_producto_id (FK)
+* unidad_medida_id (FK)
+* created_at
+* updated_at
+
+PRODUCTO_UDM
+* id (PK)
+* producto_id (FK)
+* unidad_medida_id (FK)
+* precio_compra
+* precio_venta
+* created_at
+* updated_at
+🔑 PK compuesta
+
+INVENTARIO
+* id (PK)
+* producto_id (FK)
+* existencia_actual
+* created_at
+* updated_at
+_____________________________________________________________________________________
+
+
+🔹 Compras
+FACTURA_COMPRA
+* id_factura_compra (PK)
+* numero
+* fecha
+* fecha_vencimiento
+* id_proveedor (FK → Persona)
+
+
+DETALLE_FACTURA_COMPRA
+* id_factura_compra (FK)
+* id_producto (FK)
+* cantidad
+* id_udm
+* precio_unitario
+* porcentaje_iva
+_____________________________________________________________________________________
+
+
+🔹 Ventas y Pedidos
+
+ESTADO_PEDIDO
+* id_estado (PK)
+* descripcion
+
+PEDIDO
+* id_pedido (PK)
+* fecha_hora
+* fecha_entrega
+* id_cliente (FK → Persona)
+* id_empleado (FK → Persona)
+* id_estado (FK)
+
+DETALLE_PEDIDO
+* id_pedido (FK)
+* id_producto (FK)
+* cantidad
+* id_udm
+* precio_unitario
+_____________________________________________________________________________________
+
+
+🔹 Pedidos no realizados
+
+PEDIDO_NO_REALIZADO
+* id_pedido_nr (PK)
+* fecha_hora
+* id_cliente (FK → Persona)
+
+DETALLE_PEDIDO_NO_REALIZADO
+* id_pedido_nr (FK)
+* id_producto (FK)
+* cantidad
+* id_udm
+* precio_unitario
+_____________________________________________________________________________________
+
+🔹 Empaquetado y Entrega
+
+CAJA
+* id_caja (PK)
+* id_pedido (FK)
+* numero_caja
+* total_cajas
+* fecha_entrega
+
+VEHICULO
+* id_vehiculo (PK)
+* descripcion
+* patente
+
+HOJA_RUTA
+* id_hoja_ruta (PK)
+* id_repartidor (FK → Persona)
+* id_vehiculo (FK)
+* hora_salida
+* hora_retorno
+
+MOTIVO_NO_ENTREGA
+* id_motivo (PK)
+* descripcion
+
+DETALLE_HOJA_RUTA
+* id_hoja_ruta (FK)
+* id_caja (FK)
+* orden
+* fecha_hora_entrega
+* receptor_nombre
+* receptor_cedula
+* id_motivo_no_entrega (FK, NULL)
+_____________________________________________________________________________________
+
+
+🔹 Facturación de venta
+
+FACTURA_VENTA
+* id_factura (PK)
+* numero
+* fecha
+* fecha_vencimiento
+* id_pedido (FK)
+
+DETALLE_FACTURA_VENTA
+* id_factura (FK)
+* id_producto (FK)
+* cantidad
+* id_udm
+* precio_unitario
+* porcentaje_iva
+_____________________________________________________________________________________
+
+
+🔹 Ajustes de inventario
+
+MOTIVO_AJUSTE
+* id_motivo (PK)
+* descripcion
+
+AJUSTE_INVENTARIO
+* id_ajuste (PK)
+* fecha_hora
+* realizado_por (FK → Persona)
+* autorizado_por (FK → Persona)
+_____________________________________________________________________________________
+
+DETALLE_AJUSTE_INVENTARIO
+* id_ajuste (FK)
+* id_producto (FK)
+* cantidad
+* id_motivo (FK)
+_____________________________________________________________________________________
+
+2️⃣ Normalización (1FN, 2FN, 3FN)
+✔ Primera Forma Normal (1FN)
+* No hay campos multivaluados (teléfonos separados)
+* No hay grupos repetitivos
+
+✔ Segunda Forma Normal (2FN)
+* Todas las tablas con PK compuesta dependen totalmente de la PK
+Ej: DETALLE_PEDIDO, PRODUCTO_UDM
+
+✔ Tercera Forma Normal (3FN)
+* No hay dependencias transitivas
+* IVA no depende de pedido, depende del producto
+* Dirección no se repite en cliente/proveedor → está en Persona
+
+✅ Modelo correctamente normalizado
+_____________________________________________________________________________________
+
+
+3️⃣ SQL – PostgreSQL (extracto clave)
+CREATE TABLE persona (
+    id_persona SERIAL PRIMARY KEY,
+    nombre_razon_social VARCHAR(100) NOT NULL,
+    ruc VARCHAR(20) UNIQUE,
+    direccion TEXT,
+    ciudad VARCHAR(50),
+    descripcion_ubicacion TEXT
+);
+
+CREATE TABLE cliente (
+    id_persona INT PRIMARY KEY REFERENCES persona(id_persona),
+    nombre_contacto VARCHAR(100)
+);
+
+CREATE TABLE proveedor (
+    id_persona INT PRIMARY KEY REFERENCES persona(id_persona)
+);
+
+CREATE TABLE telefono (
+    id_telefono SERIAL PRIMARY KEY,
+    id_persona INT REFERENCES persona(id_persona),
+    numero VARCHAR(30)
+);
+
+
+
+
+
+------------------------------------------------------------
+------------------------------------------------------------
+-- CREATE SCHEMA inventory AUTHORIZATION postgres;
+
+CREATE TABLE inventory.familia_producto (
+	id bigserial NOT NULL,
+	nombre varchar(50) NOT NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT familia_producto_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE inventory.unidad_medida (
+	id bigserial NOT NULL,
+	nombre varchar(20) NOT NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT unidad_medida_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE inventory.producto (
+	id bigserial NOT NULL,
+	nombre varchar(100) NOT NULL,
+	marca varchar(50) NULL,
+	descripcion text NULL,
+	color varchar(30) NULL,
+	pais_origen varchar(50) NULL,
+	porcentaje_iva int4 NOT NULL,
+	familia_producto_id int8 NOT NULL,
+	unidad_medida_id int8 NOT NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT producto_pkey PRIMARY KEY (id)
+);
+ALTER TABLE inventory.producto ADD CONSTRAINT inventory_producto_familia_producto_id_foreign FOREIGN KEY (familia_producto_id) REFERENCES inventory.familia_producto(id);
+ALTER TABLE inventory.producto ADD CONSTRAINT inventory_producto_unidad_medida_id_foreign FOREIGN KEY (unidad_medida_id) REFERENCES inventory.unidad_medida(id);
+
+CREATE TABLE inventory.producto_udm (
+	id bigserial NOT NULL,
+	producto_id int8 NOT NULL,
+	unidad_medida_id int8 NOT NULL,
+	precio_compra numeric(10, 2) NOT NULL,
+	precio_venta numeric(10, 2) NOT NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT producto_udm_pkey PRIMARY KEY (id)
+);
+ALTER TABLE inventory.producto_udm ADD CONSTRAINT inventory_producto_udm_producto_id_foreign FOREIGN KEY (producto_id) REFERENCES inventory.producto(id);
+ALTER TABLE inventory.producto_udm ADD CONSTRAINT inventory_producto_udm_unidad_medida_id_foreign FOREIGN KEY (unidad_medida_id) REFERENCES inventory.unidad_medida(id);
+
+CREATE TABLE inventory.inventario (
+	id bigserial NOT NULL,
+	producto_id int8 NOT NULL,
+	existencia_actual numeric(10, 2) NOT NULL DEFAULT '0'::numeric,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT inventario_pkey PRIMARY KEY (id)
+);
+ALTER TABLE inventory.inventario ADD CONSTRAINT inventory_inventario_producto_id_foreign FOREIGN KEY (producto_id) REFERENCES inventory.producto(id);
+------------------------------------------------------------
+------------------------------------------------------------

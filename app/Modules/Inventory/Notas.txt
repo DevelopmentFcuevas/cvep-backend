@@ -1,0 +1,36 @@
+📦 MÓDULO PRODUCTOS / INVENTORY (Laravel API)
+
+🎯 Alcance de este módulo
+
+Este módulo se encarga de:
+
+* Familias de productos
+* Unidades de medida (UDM)
+* Productos
+* Precios por UDM
+* Inventario (existencia)
+--------------------------------------------------------------------------
+
+Estructura del módulo
+
+Creamos el módulo Inventory (o Products, pero Inventory encaja mejor con stock):
+
+app/
+ └── Modules/
+      └── Inventory/
+           ├── Controllers/
+           │    ├── ProductController.php
+           │    ├── FamilyController.php
+           │    └── UnitController.php
+           ├── Models/
+           │    ├── Product.php
+           │    ├── ProductFamily.php
+           │    ├── UnitMeasure.php
+           │    ├── ProductUnit.php
+           │    └── Inventory.php
+           ├── Requests/
+           │    └── StoreProductRequest.php
+           ├── Routes/
+           │    └── api.php
+           └── Services/
+                └── ProductService.php
