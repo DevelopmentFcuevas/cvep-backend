@@ -2,16 +2,15 @@
 
 namespace App\Modules\Inventory\Requests;
 
-use Illuminate\Validation\Rule;
-use App\Modules\Inventory\Models\Product;
-use App\Modules\Inventory\Models\UnidadMedida;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Modules\Inventory\Models\UnidadMedida;
 
 /**
- * Request de validación para crear un precio por 
+ * Request de validación para actualizar un precio por 
  * unidad de medida de un producto.
  */
-class StoreProductPriceRequest extends FormRequest
+class UpdateProductPriceRequest extends FormRequest
 {
     public function authorize()
     {
@@ -22,7 +21,7 @@ class StoreProductPriceRequest extends FormRequest
     {
         return [
             //'producto_id' => ['required', Rule::exists(Product::class, 'id')],
-            'unidad_medida_id' => ['required', Rule::exists(UnidadMedida::class, 'id')],
+            //'unidad_medida_id' => ['required', Rule::exists(UnidadMedida::class, 'id')],
             'precio_compra' => 'required|numeric|min:0',
             'precio_venta' => 'required|numeric|min:0',
         ];

@@ -4,63 +4,42 @@ namespace App\Modules\Inventory\Controllers;
 
 use App\Modules\Inventory\Models\Inventory;
 use App\Modules\Inventory\Models\Product;
-use App\Modules\Inventory\Models\ProductFamily;
-use App\Modules\Inventory\Models\ProductUnit;
-use App\Modules\Inventory\Models\UnidadMedida;
-use App\Modules\Inventory\Requests\StoreProductRequest;
+use App\Modules\Inventory\Requests\StoreProductRequest; // Inyecta el FormRequest
 use App\Http\Controllers\Controller;
-//use Illuminate\Http\Request;
+use App\Modules\Inventory\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Despliega una lista de los recursos.
      */
     public function index()
     {
         $product = Product::all();
         return response()->json($product);
-        //return Product::with(['family', 'unidadMedida', 'productUnit', 'inventory'])->get();
+        // return Product::with(['family', 'unidadMedida', 'productUnit', 'inventory'])->get();
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    //public function create()
-    //{
-        //
-    //}
-
-    /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo recurso creado en la base de datos.
      */
     public function store(StoreProductRequest $request)
     {
-        //$product = Product::create($request->validated());
-        //Inventory::create([
-        //    'product_id' => $product->id,
-        //    'existencia_actual' => 0,
-        //]);
-        //return response()->json([
-        //    'message' => 'Producto creado exitosamente',
-        //    'product' => $product,
-        //], 201);
-
-        
-        $data = $request->validated(); // Valida los datos del request
+        // Valida los datos del request.
+        $data = $request->validated();
         
         // Inserta el producto en la base de datos. Después de 
         // insertar, la base de datos devuelve el ID generado (ej: 6). 
-        //Laravel automáticamente asigna ese valor a $product->id.
+        // Laravel automáticamente asigna ese valor a $product->id.
         $product = Product::create($data); 
         
-        // Inserta el producto en la tabla inventario
+        // Inserta el producto en la tabla inventario.
         Inventory::create([
             'producto_id' => $product->id, 
             'existencia_actual' => 0 // Inserta la existencia actual
         ]);
 
-        //return response()->json($product, 201);
+        // return response()->json($product, 201);
         return response()->json(
             [
                 'message' => 'Producto creado exitosamente',
@@ -70,36 +49,86 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
-    //public function show(string $id)
-    //{
-        //
-    //}
+    public function show($id)
+    {
+        // Busca el producto por ID.
+        $product = Product::findOrFail($id);
+        return response()->json($product);
+    }
+    
+    public function update(UpdateProductRequest $request, $id)
+    {
+        // Valida los datos del request.
+        $data = $request->validated();
+        
+        // Busca el producto por ID.
+        $product = Product::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    //public function edit(string $id)
-    //{
-        //
-    //}
+        // Actualiza el producto en la base de datos.
+        $product->update($data);
+        
+        // Actualiza el producto en la tabla inventario.
+        //Inventory::where('producto_id', $id)->update([
+        //    'existencia_actual' => $data['existencia_actual']
+        //]);
+        
+        // return response()->json($product, 200);
+        return response()->json(
+            [
+                'message' => 'Producto actualizado exitosamente',
+                'product' => $product
+            ],
+            200
+        );
+    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    //public function update(Request $request, string $id)
-    //{
-        //
-    //}
+    public function destroy($id)
+    {
+        /*
+        // Busca el producto por ID.
+        $product = Product::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    //public function destroy(string $id)
-    //{
-        //
-    //}
+        // Elimina el producto de la base de datos.
+        $product->delete();
+        
+        // return response()->json($product, 200);
+        return response()->json(
+            [
+                'message' => 'Producto eliminado exitosamente'//,
+                //'product' => $product
+            ],
+            200
+        );
+        */
+
+        // Busca el producto por ID.
+        $product = Product::findOrFail($id);
+
+        // Si tiene precios asociados
+        if ($product->unidadMedida()->exists()) {
+            return response()->json([
+                'message' => 'No se puede eliminar el producto porque tiene precios asociados.'
+            ], 409);
+        }
+
+        // Si tiene inventario y stock mayor a 0
+        if ($product->inventory()->exists() && $product->inventory->existencia_actual > 0) {
+            return response()->json([
+                'message' => 'No se puede eliminar el producto porque tiene stock disponible.'
+            ], 409);
+        }
+
+        // Elimina el producto de la base de datos.
+        $product->delete();
+        
+        // return response()->json($product, 200);
+        return response()->json(
+            [
+                'message' => 'Producto eliminado exitosamente'//,
+                //'product' => $product
+            ],
+            200
+        );    
+    }
 
 }

@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 // Importa las rutas del módulo inventario.
 require base_path('app/Modules/Inventory/Routes/api.php');
 
+// Importa las rutas del módulo personas.
+require base_path('app/Modules/People/Routes/api.php');
+
 // Rutas de contabilidad.
 //require base_path('app/Modules/Accounting/Routes/api.php');
 
