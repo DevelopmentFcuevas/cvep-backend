@@ -7,6 +7,9 @@ use Illuminate\Validation\Rule;
 use App\Modules\Inventory\Models\ProductFamily;
 use App\Modules\Inventory\Models\UnidadMedida;
 
+/**
+ * Request de validación para actualizar un producto.
+ */
 class UpdateProductRequest extends FormRequest
 {
     public function authorize()

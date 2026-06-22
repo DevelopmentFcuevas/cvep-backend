@@ -7,6 +7,9 @@ use Illuminate\Validation\Rule;
 use App\Modules\Inventory\Models\ProductFamily;
 use App\Modules\Inventory\Models\UnidadMedida;
 
+/**
+ * Request de validación para crear un producto.
+ */
 class StoreProductRequest extends FormRequest
 {
     public function authorize()
@@ -23,11 +26,16 @@ class StoreProductRequest extends FormRequest
             'color' => 'nullable|string',
             'pais_origen' => 'nullable|string',
             'porcentaje_iva' => 'required|integer',
-            //'familia_producto_id' => 'required|exists:inventory.familia_producto,id',
-            //'unidad_medida_id' => 'required|exists:inventory.unidad_medida,id'
-            //'unidad_medida_id' => ['required', Rule::exists(ProductUdM::class, 'id')]
             'familia_producto_id' => ['required', Rule::exists(ProductFamily::class, 'id')],
             'unidad_medida_id' => ['required', Rule::exists(UnidadMedida::class, 'id')]
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'familia_producto_id.exists' => 'La familia de producto seleccionada no existe.',
+            'unidad_medida_id.exists' => 'La unidad de medida seleccionada no existe.',
         ];
     }
 }

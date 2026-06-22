@@ -20,8 +20,6 @@ class UpdateProductPriceRequest extends FormRequest
     public function rules()
     {
         return [
-            //'producto_id' => ['required', Rule::exists(Product::class, 'id')],
-            //'unidad_medida_id' => ['required', Rule::exists(UnidadMedida::class, 'id')],
             'precio_compra' => 'required|numeric|min:0',
             'precio_venta' => 'required|numeric|min:0',
         ];

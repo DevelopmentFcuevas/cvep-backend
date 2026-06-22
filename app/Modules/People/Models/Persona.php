@@ -14,8 +14,6 @@ class Persona extends Model
 
     protected $primaryKey = 'id';
     
-    //public $timestamps = false;
-    
     protected $fillable = [
         'nombre_razon_social',
         'ruc',

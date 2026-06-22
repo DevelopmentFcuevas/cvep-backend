@@ -10,8 +10,6 @@ class ProductUdM extends Model
 
     protected $primaryKey = 'id';
     
-    //public $timestamps = false;
-    
     protected $fillable = [
         'producto_id',
         'unidad_medida_id',

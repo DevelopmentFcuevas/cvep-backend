@@ -48,6 +48,10 @@
             "@php artisan config:clear --ansi",
             "@php artisan test"
         ],
+        "db:reset": [
+            "@php artisan tinker --execute=\"DB::unprepared('DROP SCHEMA IF EXISTS inventory CASCADE; CREATE SCHEMA inventory; DROP SCHEMA IF EXISTS contacts CASCADE; CREATE SCHEMA contacts; DROP SCHEMA IF EXISTS purchases CASCADE; CREATE SCHEMA purchases;');\"",
+            "@php artisan migrate:fresh"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

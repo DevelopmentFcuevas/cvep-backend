@@ -4,6 +4,9 @@ namespace App\Modules\Inventory\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Request de validación para crear un movimiento de inventario.
+ */
 class StoreInventoryMovementRequest extends FormRequest
 {
     public function authorize()
@@ -14,8 +17,7 @@ class StoreInventoryMovementRequest extends FormRequest
     public function rules()
     {
         return [
-            //'producto_id' => 'required|exists:inventory.producto,id',
-            'tipo_movimiento' => 'required|in:entrada,salida,ajuste',
+            'tipo_movimiento' => 'required|in:ENTRADA,SALIDA,AJUSTE',
             'cantidad' => 'required|numeric|min:0',
             'motivo' => 'nullable|string|max:255',
         ];

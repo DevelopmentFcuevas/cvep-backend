@@ -10,8 +10,6 @@ class InventoryMovement extends Model
 
     protected $primaryKey = 'id';
     
-    //public $timestamps = false;
-    
     protected $fillable = [
         'producto_id',
         'tipo_movimiento',

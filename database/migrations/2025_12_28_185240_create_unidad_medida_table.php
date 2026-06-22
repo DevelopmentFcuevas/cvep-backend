@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migración para la tabla unidad_medida.
+ * 
+ */
+
 return new class extends Migration
 {
     /**

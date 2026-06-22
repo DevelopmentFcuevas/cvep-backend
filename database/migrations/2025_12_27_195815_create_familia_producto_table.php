@@ -4,6 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migración para la tabla familia_producto.
+ * @author Francisco Cuevas
+ * @since 2025-12-27
+ * @description Tabla que almacena las familias de productos.
+ *  Las familias de productos son agrupaciones de productos que comparten 
+ * características similares. Por ejemplo: suministros, utiles, tintas, 
+ * repuestos, accesorios, etc.
+ * @version 1.0.0
+ * @category Inventory
+ * @package App\Modules\Inventory\Models
+ */
+
 return new class extends Migration
 {
     /**
@@ -15,9 +28,8 @@ return new class extends Migration
     {
         Schema::create('inventory.familia_producto', function (Blueprint $table) {
             $table->id();
-            //$table->id('id_familia_producto');
-            //$table->string('nombre_familia_producto', 50);
-            $table->string('nombre', 50);
+            $table->string('nombre', 100);
+            $table->string('estado')->nullable()->default('ACTIVO');
             $table->timestamps();
         });
     }

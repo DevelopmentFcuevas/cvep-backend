@@ -10,8 +10,6 @@ class Inventory extends Model
 
     protected $primaryKey = 'id';
     
-    //public $timestamps = false;
-    
     protected $fillable = [
         'producto_id',
         'existencia_actual',

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\Inventory\Controllers\ProductController;
 use App\Modules\Inventory\Controllers\ProductPriceController;
 use App\Modules\Inventory\Controllers\InventoryMovementController;
+use App\Modules\Inventory\Controllers\ProductFamilyController;
+use App\Modules\Inventory\Controllers\UnidadMedidaController;
 
 
 /*
@@ -71,3 +73,48 @@ Route::prefix('inventory/{productId}')->group(function () {
 });
 
 
+
+
+/**
+ * Rutas de familias de productos...
+ * Endpoints disponibles del API para Familias de Productos.
+ * Método   URL                                                     Acción
+ * POST     /api/product-families                                   Crear familia
+ * GET      /api/product-families                                   Listar familias
+ * PUT      /api/product-families/{id}                              Actualizar familia
+ * DELETE   /api/product-families/{id}                              Eliminar familia
+ * 
+ * Familias de Productos pertenece a Producto.
+ */
+Route::prefix('product-families')->group(function () {
+    Route::get('/', [ProductFamilyController::class, 'index']);
+    Route::post('/', [ProductFamilyController::class, 'store']);
+    //Route::get('/{id}', [ProductController::class, 'show']);
+    //Route::put('/{id}', [ProductController::class, 'update']);
+    //Route::delete('/{id}', [ProductController::class, 'destroy']);
+});
+
+
+
+
+
+
+
+
+/**
+ * Endpoints disponibles del API para Unidades de Medida.
+ * Método   URL                                                     Acción
+ * POST     /api/unidad-medidas                                   Crear unidad de medida
+ * GET      /api/unidad-medidas                                   Listar unidades de medida
+ * PUT      /api/unidad-medidas/{id}                              Actualizar unidad de medida
+ * DELETE   /api/unidad-medidas/{id}                              Eliminar unidad de medida
+ * 
+ * Unidades de Medida pertenece a Producto.
+ */
+Route::prefix('unidad-medidas')->group(function () {
+    Route::get('/', [UnidadMedidaController::class, 'index']);
+    Route::post('/', [UnidadMedidaController::class, 'store']);
+    //Route::get('/{id}', [ProductController::class, 'show']);
+    //Route::put('/{id}', [ProductController::class, 'update']);
+    //Route::delete('/{id}', [ProductController::class, 'destroy']);
+});

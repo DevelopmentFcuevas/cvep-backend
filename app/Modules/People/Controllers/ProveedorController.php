@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
-//use Illuminate\Foundation\Http\FormRequest;
+/**
+ * Controlador para gestionar proveedores.
+ */
 
 class ProveedorController extends Controller
 {

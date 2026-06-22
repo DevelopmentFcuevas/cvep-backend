@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migración para la tabla producto.
+ * 
+ */
+
 return new class extends Migration
 {
     /**
@@ -24,8 +29,6 @@ return new class extends Migration
             $table->string('color', 30)->nullable();
             $table->string('pais_origen', 50)->nullable();
             $table->integer('porcentaje_iva');
-            //$table->foreignId('id_familia')->references('id')->on('familia_producto');
-            //$table->foreignId('id_udm_referencia')->references('id')->on('unidad_medida');
             $table->foreignId('familia_producto_id')->references('id')->on('inventory.familia_producto');
             $table->foreignId('unidad_medida_id')->references('id')->on('inventory.unidad_medida');
             $table->timestamps();

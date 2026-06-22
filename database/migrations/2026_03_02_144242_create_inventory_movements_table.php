@@ -4,6 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migración para la tabla inventory_movements.
+ * 
+ */
+
 return new class extends Migration
 {
     /**
@@ -16,7 +21,7 @@ return new class extends Migration
             $table->foreignId('producto_id')
                 ->constrained('inventory.producto')
                 ->cascadeOnDelete();
-            $table->enum('tipo_movimiento', ['entrada', 'salida', 'ajuste']);
+            $table->enum('tipo_movimiento', ['ENTRADA', 'SALIDA', 'AJUSTE']);
             $table->decimal('cantidad', 10, 2);
             $table->string('motivo', 255)->nullable();
             $table->timestamps();
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory_movements');
+        Schema::dropIfExists('inventory.inventory_movements');
     }
 };

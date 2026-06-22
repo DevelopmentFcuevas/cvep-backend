@@ -9,9 +9,6 @@ class Product extends Model
     protected $table = 'inventory.producto';
 
     protected $primaryKey = 'id';
-    //protected $primaryKey = 'id_producto';
-    
-    //public $timestamps = false;
     
     protected $fillable = [
         'nombre',
