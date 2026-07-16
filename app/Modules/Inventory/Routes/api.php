@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\Inventory\Controllers\ProductController;
 use App\Modules\Inventory\Controllers\ProductPriceController;
 use App\Modules\Inventory\Controllers\InventoryMovementController;
-use App\Modules\Inventory\Controllers\ProductFamilyController;
+use App\Modules\Inventory\Controllers\CategoriaProductoController;
 use App\Modules\Inventory\Controllers\UnidadMedidaController;
 
 
@@ -86,12 +86,12 @@ Route::prefix('inventory/{productId}')->group(function () {
  * 
  * Familias de Productos pertenece a Producto.
  */
-Route::prefix('product-families')->group(function () {
-    Route::get('/', [ProductFamilyController::class, 'index']);
-    Route::post('/', [ProductFamilyController::class, 'store']);
-    //Route::get('/{id}', [ProductController::class, 'show']);
-    //Route::put('/{id}', [ProductController::class, 'update']);
-    //Route::delete('/{id}', [ProductController::class, 'destroy']);
+Route::prefix('product-categories')->group(function () {
+    Route::get('/', [CategoriaProductoController::class, 'index']);
+    Route::post('/', [CategoriaProductoController::class, 'store']);
+    //Route::get('/{id}', [CategoriaProductoController::class, 'show']);
+    //Route::put('/{id}', [CategoriaProductoController::class, 'update']);
+    //Route::delete('/{id}', [CategoriaProductoController::class, 'destroy']);
 });
 
 

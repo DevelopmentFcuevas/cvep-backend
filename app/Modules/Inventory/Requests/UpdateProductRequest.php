@@ -4,7 +4,7 @@ namespace App\Modules\Inventory\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Modules\Inventory\Models\ProductFamily;
+use App\Modules\Inventory\Models\CategoriaProducto;
 use App\Modules\Inventory\Models\UnidadMedida;
 
 /**
@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
             'color' => 'nullable|string',
             'pais_origen' => 'nullable|string',
             'porcentaje_iva' => 'required|integer',
-            'familia_producto_id' => ['required', Rule::exists(ProductFamily::class, 'id')],
+            'familia_producto_id' => ['required', Rule::exists(CategoriaProducto::class, 'id')],
             'unidad_medida_id' => ['required', Rule::exists(UnidadMedida::class, 'id')]
         ];
     }

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Request de validación para crear una familia de producto.
  */
-class StoreProductFamilyRequest extends FormRequest
+class StoreCategoriaProductoRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class StoreProductFamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:100',
+            'nombre' => 'required|string|max:255',
         ];
     }
 
@@ -25,7 +25,7 @@ class StoreProductFamilyRequest extends FormRequest
     {
         return [
             'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.max' => 'El nombre no puede exceder los 100 caracteres.',
+            'nombre.max' => 'El nombre no puede exceder los 255 caracteres.',
         ];
     }
 }

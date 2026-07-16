@@ -23,7 +23,7 @@ class Product extends Model
 
     public function family()
     {
-        return $this->belongsTo(ProductFamily::class, 'familia_producto_id');
+        return $this->belongsTo(CategoriaProducto::class, 'familia_producto_id');
     }
 
     public function unidadMedida()

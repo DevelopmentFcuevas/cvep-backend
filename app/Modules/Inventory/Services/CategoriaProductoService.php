@@ -2,7 +2,7 @@
 
 namespace App\Modules\Inventory\Services;
 
-use App\Modules\Inventory\Models\ProductFamily;
+use App\Modules\Inventory\Models\CategoriaProducto;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -13,34 +13,34 @@ use Exception;
  * @package App\Modules\Inventory\Services
  */
 
-class ProductFamilyService
+class CategoriaProductoService
 {
     /**
      * @description Obtiene todas las familias de productos.
-     * @return \Illuminate\Database\Eloquent\Collection<int, ProductFamily>
+     * @return \Illuminate\Database\Eloquent\Collection<int, CategoriaProducto>
      */
     public function getAllProductFamilies()
     {
-        return ProductFamily::all();
+        return CategoriaProducto::all();
     }
 
     //public function getProductFamilyById($id)
     //{
-    //    return ProductFamily::find($id);
+    //    return CategoriaProducto::find($id);
     //}
 
     /**
      * @description Crea una nueva familia de productos.
      * @param array $data
-     * @return \App\Modules\Inventory\Models\ProductFamily
+     * @return \App\Modules\Inventory\Models\CategoriaProducto
      */
     public function createProductFamily(array $data)
     {
-        //return ProductFamily::create($data);
+        //return CategoriaProducto::create($data);
 
         try {
             DB::beginTransaction();
-            $productFamily = ProductFamily::create($data);
+            $productFamily = CategoriaProducto::create($data);
             DB::commit();
             return $productFamily;
         } catch (\Exception $e) {

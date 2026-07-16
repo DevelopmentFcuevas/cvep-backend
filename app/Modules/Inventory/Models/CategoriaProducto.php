@@ -13,9 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Modules\Inventory\Models
  */
 
-class ProductFamily extends Model
+class CategoriaProducto extends Model
 {
-    protected $table = 'inventory.familia_producto';
+    //protected $table = 'inventory.familia_producto';
+    protected $table = 'inventory.categoria_producto';
 
     protected $primaryKey = 'id';
     

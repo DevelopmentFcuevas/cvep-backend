@@ -5,17 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Migración para la tabla familia_producto.
+ * Migración para la tabla categoria_producto.
  * @author Francisco Cuevas
- * @since 2025-12-27
- * @description Tabla que almacena las familias de productos.
- *  Las familias de productos son agrupaciones de productos que comparten 
+ * @since 2026-07-16
+ * @description Tabla que almacena las categorías de productos.
+ *  Las categorías de productos son agrupaciones de productos que comparten 
  * características similares. Por ejemplo: suministros, utiles, tintas, 
  * repuestos, accesorios, etc.
  * @version 1.0.0
  * @category Inventory
  * @package App\Modules\Inventory\Models
  */
+
 
 return new class extends Migration
 {
@@ -26,9 +27,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory.familia_producto', function (Blueprint $table) {
+        Schema::create('inventory.categoria_producto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100);
+            $table->string('nombre', 255);
             $table->string('estado')->nullable()->default('ACTIVO');
             $table->timestamps();
         });
@@ -36,9 +37,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     * Se elimina la tabla categoria_producto.
+     * @return void
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory.familia_producto');
+        Schema::dropIfExists('inventory.categoria_producto');
     }
 };
