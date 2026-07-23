@@ -20,7 +20,8 @@ return new class extends Migration
     {
         Schema::create('inventory.unidad_medida', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 20);
+            $table->string('nombre', 255);
+            $table->string('estado')->nullable()->default('ACTIVO');
             $table->timestamps();
         });
     }

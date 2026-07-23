@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('nombre', 255);
             $table->string('estado')->nullable()->default('ACTIVO');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

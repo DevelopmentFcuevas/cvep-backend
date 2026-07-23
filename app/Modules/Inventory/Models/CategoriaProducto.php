@@ -2,6 +2,7 @@
 namespace App\Modules\Inventory\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @author Francisco Cuevas
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoriaProducto extends Model
 {
+    use SoftDeletes;
     //protected $table = 'inventory.familia_producto';
     protected $table = 'inventory.categoria_producto';
 

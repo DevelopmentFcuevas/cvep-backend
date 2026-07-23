@@ -32,12 +32,12 @@ class CategoriaProductoController extends Controller
     //    return CategoriaProducto::all();
     //}
     /**
-     * @description Lista todas las familias de productos.
+     * @description Lista todas las categorías de productos.
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $data = $this->service->getAllProductFamilies();
+        $data = $this->service->getAllProductCategories();
 
         return response()->json([
             'success' => true,
@@ -62,7 +62,7 @@ class CategoriaProductoController extends Controller
      */
     public function store(StoreCategoriaProductoRequest $request)
     {
-        $productFamily = $this->service->createProductFamily($request->validated());
+        $productFamily = $this->service->createProductCategory($request->validated());
         return response()->json([
             'success' => true,
             'message' => 'Producto Familia creado correctamente',
@@ -92,4 +92,48 @@ class CategoriaProductoController extends Controller
 
     }
 
+    /**
+     * @description Obtiene una categoría de producto por su ID.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        $data = $this->service->getProductCategoryById($id);
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ], 200);
+    }
+
+    /**
+     * @description Elimina una categoría de producto.
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        $data = $this->service->deleteProductCategory($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Categoría de producto eliminada correctamente',
+            'data' => $data
+        ], 200);
+    }
+
+    /**
+     * @description Actualiza una categoría de producto.
+     * @param StoreCategoriaProductoRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(StoreCategoriaProductoRequest $request, $id)
+    {
+        $data = $this->service->updateProductCategory($id, $request->validated());
+        return response()->json([
+            'success' => true,
+            'message' => 'Categoría de producto actualizada correctamente',
+            'data' => $data
+        ], 200);
+    }
 }

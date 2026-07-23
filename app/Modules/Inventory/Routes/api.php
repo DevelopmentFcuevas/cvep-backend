@@ -76,22 +76,23 @@ Route::prefix('inventory/{productId}')->group(function () {
 
 
 /**
- * Rutas de familias de productos...
- * Endpoints disponibles del API para Familias de Productos.
+ * Rutas de categorias de productos...
+ * Endpoints disponibles del API para Categorias de Productos.
  * Método   URL                                                     Acción
- * POST     /api/product-families                                   Crear familia
- * GET      /api/product-families                                   Listar familias
- * PUT      /api/product-families/{id}                              Actualizar familia
- * DELETE   /api/product-families/{id}                              Eliminar familia
+ * POST     /api/product-categories                                 Crear categoria
+ * GET      /api/product-categories                                 Listar categorias
+ * GET      /api/product-categories/{id}                            Obtener categoria
+ * PUT      /api/product-categories/{id}                            Actualizar categoria
+ * DELETE   /api/product-categories/{id}                            Eliminar categoria
  * 
- * Familias de Productos pertenece a Producto.
+ * Categorias de Productos pertenece a Producto.
  */
 Route::prefix('product-categories')->group(function () {
     Route::get('/', [CategoriaProductoController::class, 'index']);
     Route::post('/', [CategoriaProductoController::class, 'store']);
-    //Route::get('/{id}', [CategoriaProductoController::class, 'show']);
-    //Route::put('/{id}', [CategoriaProductoController::class, 'update']);
-    //Route::delete('/{id}', [CategoriaProductoController::class, 'destroy']);
+    Route::get('/{id}', [CategoriaProductoController::class, 'show']);
+    Route::put('/{id}', [CategoriaProductoController::class, 'update']);
+    Route::delete('/{id}', [CategoriaProductoController::class, 'destroy']);
 });
 
 
