@@ -6,6 +6,7 @@ use App\Modules\Inventory\Controllers\ProductPriceController;
 use App\Modules\Inventory\Controllers\InventoryMovementController;
 use App\Modules\Inventory\Controllers\CategoriaProductoController;
 use App\Modules\Inventory\Controllers\UnidadMedidaController;
+use App\Modules\Inventory\Controllers\MarcaController;
 
 
 /*
@@ -31,7 +32,6 @@ Route::prefix('products')->group(function () {
      * clase ProductController y ejecuta el método store".
      * */
     Route::post('/', [ProductController::class, 'store']);
-
     Route::get('/{id}', [ProductController::class, 'show']);
     Route::put('/{id}', [ProductController::class, 'update']);
     Route::delete('/{id}', [ProductController::class, 'destroy']);
@@ -61,7 +61,6 @@ Route::prefix('products/{productId}')->group(function () {
 //});
 
 
-
 /**
  * Endpoints disponibles del API para Movimientos de Inventario.
  * Método   URL                                                     Acción
@@ -71,8 +70,6 @@ Route::prefix('products/{productId}')->group(function () {
 Route::prefix('inventory/{productId}')->group(function () {
     Route::post('movements', [InventoryMovementController::class, 'store']);
 });
-
-
 
 
 /**
@@ -96,12 +93,6 @@ Route::prefix('product-categories')->group(function () {
 });
 
 
-
-
-
-
-
-
 /**
  * Endpoints disponibles del API para Unidades de Medida.
  * Método   URL                                                     Acción
@@ -115,7 +106,27 @@ Route::prefix('product-categories')->group(function () {
 Route::prefix('unidad-medidas')->group(function () {
     Route::get('/', [UnidadMedidaController::class, 'index']);
     Route::post('/', [UnidadMedidaController::class, 'store']);
-    //Route::get('/{id}', [ProductController::class, 'show']);
-    //Route::put('/{id}', [ProductController::class, 'update']);
-    //Route::delete('/{id}', [ProductController::class, 'destroy']);
+    Route::get('/{id}', [UnidadMedidaController::class, 'show']);
+    Route::put('/{id}', [UnidadMedidaController::class, 'update']);
+    Route::delete('/{id}', [UnidadMedidaController::class, 'destroy']);
+});
+
+
+/**
+ * Endpoints disponibles del API para Marcas.
+ * Método   URL                                                     Acción
+ * POST     /api/marcas                                           Crear marca
+ * GET      /api/marcas                                           Listar marcas
+ * GET      /api/marcas/{id}                                    Obtener marca
+ * PUT      /api/marcas/{id}                                    Actualizar marca
+ * DELETE   /api/marcas/{id}                                    Eliminar marca
+ * 
+ * Marcas pertenece a Producto.
+ */
+Route::prefix('marcas')->group(function () {
+    Route::get('/', [MarcaController::class, 'index']);
+    Route::post('/', [MarcaController::class, 'store']);
+    Route::get('/{id}', [MarcaController::class, 'show']);
+    Route::put('/{id}', [MarcaController::class, 'update']);
+    Route::delete('/{id}', [MarcaController::class, 'destroy']);
 });

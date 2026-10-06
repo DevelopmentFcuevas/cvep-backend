@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -27,12 +28,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Eliminar la tabla si ya existe (incluyendo restricciones dependientes)
+        DB::statement('DROP TABLE IF EXISTS inventory.categoria_producto CASCADE');
         Schema::create('inventory.categoria_producto', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 255);
-            $table->string('estado')->nullable()->default('ACTIVO');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->id(); // Clave primaria autoincremental.
+            $table->string('nombre', 255); // Nombre de la categoría de producto.
+            $table->text('descripcion')->nullable()->default(''); // Descripción de la categoría de producto.
+            $table->string('sigla', 10)->nullable()->default(''); // Sigla de la categoría de producto.
+            $table->string('estado')->nullable()->default('ACTIVO'); // Estado de la categoría de producto.
+            $table->timestamps(); // Marca de tiempo de creación.
+            $table->softDeletes(); // Marca de tiempo de eliminación suave.
         });
     }
 
@@ -43,6 +48,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
+        Schema::table('inventory.producto', function (Blueprint $table) {
+            $table->dropForeign(['categoria_producto_id']);
+        });
         Schema::dropIfExists('inventory.categoria_producto');
+        Schema::enableForeignKeyConstraints();
     }
 };

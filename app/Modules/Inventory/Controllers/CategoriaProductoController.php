@@ -3,9 +3,10 @@
 namespace App\Modules\Inventory\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Inventory\Models\CategoriaProducto;
 use App\Modules\Inventory\Requests\StoreCategoriaProductoRequest;
+use App\Modules\Inventory\Requests\UpdateCategoriaProductoRequest;
 use App\Modules\Inventory\Services\CategoriaProductoService;
+use Illuminate\Support\Facades\Log;
 
 class CategoriaProductoController extends Controller
 {
@@ -24,14 +25,6 @@ class CategoriaProductoController extends Controller
     }
 
     /**
-     * @description Lista todas las familias de productos.
-     * @return \Illuminate\Database\Eloquent\Collection<int, CategoriaProducto>
-     */
-    //public function index()
-    //{
-    //    return CategoriaProducto::all();
-    //}
-    /**
      * @description Lista todas las categorías de productos.
      * @return \Illuminate\Http\JsonResponse
      */
@@ -45,51 +38,24 @@ class CategoriaProductoController extends Controller
         ], 200);
     }
 
+    
     /**
-     * @description Crea una nueva familia de productos.
-     * @param StoreCategoriaProductoRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    //public function store(StoreCategoriaProductoRequest $request)
-    //{
-    //    $productFamily = CategoriaProducto::create($request->all());
-    //    return response()->json($productFamily, 201);
-    //}
-    /**
-     * @description Crea una nueva familia de productos.
+     * @description Crea una nueva categoria de productos.
      * @param StoreCategoriaProductoRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreCategoriaProductoRequest $request)
     {
+        Log::info('Ingreso a la funcion store de CategoriaProductoController');
+        Log::info('Request: ' . json_encode($request->all(), JSON_PRETTY_PRINT));
+
         $productFamily = $this->service->createProductCategory($request->validated());
+        Log::info('Sale de la funcion store de CategoriaProductoController');
         return response()->json([
             'success' => true,
-            'message' => 'Producto Familia creado correctamente',
+            'message' => 'Categoría de producto creada correctamente',
             'data' => $productFamily
         ], 201);
-
-        //try {
-        //    $productFamily = $this->service->createProductFamily($request->validated());
-        //    return response()->json([
-        //        'success' => true,
-        //        'message' => 'Producto Familia creado correctamente',
-        //        'data' => $productFamily
-        //    ], 201);
-        //} catch (\Exception $e) {
-        //    // Log crítico
-        //    logger()->error('Error creando familia de producto', [
-        //        'error' => $e->getMessage(),
-        //        'data' => $request->all()
-        //    ]);
-
-        //    return response()->json([
-        //        'success' => false,
-        //        'message' => 'No se pudo crear la categoría de producto. Intenta de nuevo más tarde.',
-        //        'error' => $e->getMessage()
-        //    ], 500);
-        //}
-
     }
 
     /**
@@ -123,11 +89,11 @@ class CategoriaProductoController extends Controller
 
     /**
      * @description Actualiza una categoría de producto.
-     * @param StoreCategoriaProductoRequest $request
+     * @param UpdateCategoriaProductoRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(StoreCategoriaProductoRequest $request, $id)
+    public function update(UpdateCategoriaProductoRequest $request, $id)
     {
         $data = $this->service->updateProductCategory($id, $request->validated());
         return response()->json([

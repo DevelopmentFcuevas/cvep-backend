@@ -7,31 +7,72 @@ use App\Modules\Inventory\Models\Product;
 use App\Modules\Inventory\Requests\StoreProductRequest; // Inyecta el FormRequest
 use App\Http\Controllers\Controller;
 use App\Modules\Inventory\Requests\UpdateProductRequest;
+use App\Modules\Inventory\Services\ProductoService;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     /**
-     * Despliega una lista de los recursos.
+     * @var ProductoService
      */
-    public function index()
+    protected $productService;
+
+    /**
+     * @description Inyecta la dependencia del servicio de productos.
+     * @param ProductoService $productService
+     */
+    public function __construct(ProductoService $productService)
     {
-        $product = Product::all();
-        return response()->json($product);
-        // return Product::with(['family', 'unidadMedida', 'productUnit', 'inventory'])->get();
+        $this->productService = $productService;
     }
 
     /**
-     * Almacena un nuevo recurso creado en la base de datos.
+     * @description Valida si el producto existe en la base de datos.
+     * @param int $id
+     * @return Product|null
+     */
+    public function findProduct($id)
+    {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json([
+                'message' => 'Producto no encontrado'
+            ], 404);
+        }
+        return $product;
+    }
+
+    /**
+     * @description Lista todos los productos.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        $data = $this->productService->getAllProductos();
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ], 200);
+    }
+
+    /**
+     * @description Almacena un nuevo producto.
+     * @param StoreProductRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreProductRequest $request)
     {
+        Log::info('Ingreso a la funcion store de ProductController');
+        Log::info('Request: ' . json_encode($request->all(), JSON_PRETTY_PRINT));
+        
         // Valida los datos del request.
         $data = $request->validated();
         
         // Inserta el producto en la base de datos. Después de 
         // insertar, la base de datos devuelve el ID generado (ej: 6). 
         // Laravel automáticamente asigna ese valor a $product->id.
-        $product = Product::create($data); 
+        //$product = Product::create($data); 
+        $product = $this->productService->createProducto($data);
         
         // Inserta el producto en la tabla inventario.
         Inventory::create([
@@ -40,8 +81,12 @@ class ProductController extends Controller
         ]);
 
         // return response()->json($product, 201);
+        Log::info('Sale de la funcion store de ProductController');
+        Log::info('Response: ' . json_encode($product, JSON_PRETTY_PRINT));
+
         return response()->json(
             [
+                'success' => true,
                 'message' => 'Producto creado exitosamente',
                 'product' => $product
             ],

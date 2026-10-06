@@ -16,16 +16,30 @@ use Exception;
 
 class UnidadMedidaService
 {
+    /**
+     * @description Lista todas las unidades de medida.
+     * @return \Illuminate\Database\Eloquent\Collection<int, UnidadMedida>
+     */
     public function getAllUnitMeasures()
     {
         return UnidadMedida::all();
     }
 
+    /**
+     * @description Obtiene una unidad de medida por su ID.
+     * @param int $id
+     * @return \App\Modules\Inventory\Models\UnidadMedida
+     */
     public function getUnitMeasureById($id)
     {
         return UnidadMedida::find($id);
     }
 
+    /**
+     * @description Crea una nueva unidad de medida.
+     * @param array $data
+     * @return \App\Modules\Inventory\Models\UnidadMedida
+     */
     public function createUnitMeasure(array $data)
     {
         try {
@@ -45,6 +59,12 @@ class UnidadMedidaService
         }
     }
 
+    /*
+     * @description Actualiza una unidad de medida.
+     * @param int $id
+     * @param array $data
+     * @return \App\Modules\Inventory\Models\UnidadMedida
+    */
     public function updateUnitMeasure($id, $data)
     {
         try {
@@ -65,6 +85,11 @@ class UnidadMedidaService
         }
     }
 
+    /**
+     * @description Elimina una unidad de medida.
+     * @param int $id
+     * @return \App\Modules\Inventory\Models\UnidadMedida
+     */
     public function deleteUnitMeasure($id)
     {
         try {
@@ -86,4 +111,5 @@ class UnidadMedidaService
             throw $e;
         }
     }
+    
 }

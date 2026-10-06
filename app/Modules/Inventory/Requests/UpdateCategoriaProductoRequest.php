@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Request de validación para crear una unidad de medida.
+ * Request de validación para actualizar una categoría de producto.
  */
-class StoreUnidadMedidaRequest extends FormRequest
+class UpdateCategoriaProductoRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,11 +17,12 @@ class StoreUnidadMedidaRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
-            'nombre' => ['required', 'string', 'max:255', Rule::unique('inventory.unidad_medida', 'nombre')],
+            'nombre' => ['required', 'string', 'max:255', Rule::unique('inventory.categoria_producto', 'nombre')->ignore($id)],
             'descripcion' => 'nullable|string|max:255',
-            'sigla' => ['nullable', 'string', 'max:10', Rule::unique('inventory.unidad_medida', 'sigla')],
-            'decimal' => 'nullable|integer',
+            'sigla' => ['nullable', 'string', 'max:10', Rule::unique('inventory.categoria_producto', 'sigla')->ignore($id)],
             'estado' => 'nullable|string|in:ACTIVO,INACTIVO',
         ];
     }
@@ -35,7 +36,6 @@ class StoreUnidadMedidaRequest extends FormRequest
             'descripcion.max' => 'La descripción no puede exceder los 255 caracteres.',
             'sigla.max' => 'La sigla no puede exceder los 10 caracteres.',
             'sigla.unique' => 'La sigla ya existe.',
-            'decimal.integer' => 'El decimal debe ser un número entero.',
             'estado.in' => 'El estado debe ser ACTIVO o INACTIVO.',
         ];
     }

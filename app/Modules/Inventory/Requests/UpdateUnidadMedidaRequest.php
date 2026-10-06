@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Request de validación para crear una unidad de medida.
+ * Request de validación para actualizar una unidad de medida.
  */
-class StoreUnidadMedidaRequest extends FormRequest
+class UpdateUnidadMedidaRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,10 +17,12 @@ class StoreUnidadMedidaRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
-            'nombre' => ['required', 'string', 'max:255', Rule::unique('inventory.unidad_medida', 'nombre')],
+            'nombre' => ['required', 'string', 'max:255', Rule::unique('inventory.unidad_medida', 'nombre')->ignore($id)],
             'descripcion' => 'nullable|string|max:255',
-            'sigla' => ['nullable', 'string', 'max:10', Rule::unique('inventory.unidad_medida', 'sigla')],
+            'sigla' => ['nullable', 'string', 'max:10', Rule::unique('inventory.unidad_medida', 'sigla')->ignore($id)],
             'decimal' => 'nullable|integer',
             'estado' => 'nullable|string|in:ACTIVO,INACTIVO',
         ];

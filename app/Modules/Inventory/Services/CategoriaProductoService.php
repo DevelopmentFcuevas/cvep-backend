@@ -5,6 +5,7 @@ namespace App\Modules\Inventory\Services;
 use App\Modules\Inventory\Models\CategoriaProducto;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @author Francisco Cuevas
@@ -42,10 +43,14 @@ class CategoriaProductoService
     public function createProductCategory(array $data)
     {
         try {
+            Log::info('Ingreso a la funcion createProductCategory de CategoriaProductoService');
+            Log::info('Data: ' . json_encode($data, JSON_PRETTY_PRINT));
             DB::beginTransaction();
             $productCategory = CategoriaProducto::create($data);
             DB::commit();
+            Log::info('Sale de la funcion createProductCategory de CategoriaProductoService');
             return $productCategory;
+            
         } catch (\Exception $e) {
             // Log crítico
             logger()->error('Error creando categoría de producto', [

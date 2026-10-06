@@ -24,6 +24,9 @@ require base_path('app/Modules/People/Routes/api.php');
 // Rutas de compras.
 require base_path('app/Modules/Purchases/Routes/api.php');
 
+// Rutas de public.
+require base_path('app/Modules/Public/Routes/api.php');
+
 // Rutas de reportes.
 //require base_path('app/Modules/Reports/Routes/api.php');
 

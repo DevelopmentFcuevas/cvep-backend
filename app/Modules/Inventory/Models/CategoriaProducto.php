@@ -17,13 +17,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CategoriaProducto extends Model
 {
     use SoftDeletes;
-    //protected $table = 'inventory.familia_producto';
+    
     protected $table = 'inventory.categoria_producto';
 
     protected $primaryKey = 'id';
     
+    /**
+     * @description Lista de campos permitidos para asignación masiva.
+     * @var array
+     */
     protected $fillable = [
         'nombre',
+        'descripcion',
+        'sigla',
+        'estado',
     ];
 
 }

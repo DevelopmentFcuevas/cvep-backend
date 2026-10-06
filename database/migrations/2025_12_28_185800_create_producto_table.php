@@ -22,15 +22,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventory.producto', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 100);
-            $table->string('marca', 50)->nullable();
-            $table->text('descripcion')->nullable();
-            $table->string('color', 30)->nullable();
-            $table->string('pais_origen', 50)->nullable();
-            $table->integer('porcentaje_iva');
-            $table->foreignId('familia_producto_id')->references('id')->on('inventory.familia_producto');
+            $table->id(); // PK autoincremental
+            $table->string('nombre', 100); // Nombre del producto
+            $table->foreignId('marca_id')->references('id')->on('inventory.marcas'); // FK a la tabla marca
+            $table->string('codigo_barras', 20)->nullable(); // Codigo de barras del producto
+            $table->text('descripcion')->nullable(); // Descripción del producto
+            $table->string('modelo', 100)->nullable(); // Modelo del producto
+            $table->string('serie', 100)->nullable(); // Serie del producto
+            $table->text('notas')->nullable(); // Notas del producto
+            $table->decimal('peso', 10, 2)->nullable(); // Peso del producto
+            $table->decimal('volumen', 10, 2)->nullable(); // Volumen del producto
+            $table->foreignId('color_id')->nullable(); // FK a la tabla color
+            $table->foreignId('pais_id')->nullable(); // FK a la tabla pais
+            $table->foreignId('categoria_producto_id')->references('id')->on('inventory.categoria_producto');
             $table->foreignId('unidad_medida_id')->references('id')->on('inventory.unidad_medida');
+            $table->string('estado')->nullable()->default('ACTIVO'); // Estado del producto.
             $table->timestamps();
         });
     }
@@ -40,6 +46,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('inventory.producto');
+        Schema::enableForeignKeyConstraints();
     }
 };
